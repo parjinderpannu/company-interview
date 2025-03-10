@@ -15,14 +15,14 @@ func giveChange(total, paid float64) {
 	change := paid - total
 	fmt.Printf("Total change to return: %.2f\n", change)
 
-	denominations := []float64{20, 10, 1, 0.25, 0.10, 0.05}
+	denominations := []float64{20, 10, 5, 1, 0.25, 0.10, 0.05, 0.01}
 	changeMap := make(map[float64]int)
 
 	for _, denom := range denominations {
 		if change >= denom {
 			count := int(change / denom)
 			changeMap[denom] = count
-			change = math.Round((change-float64(count)*denom)*100) / 100
+			change = math.Round((change-float64(count)*denom)*100) / 100 // Avoid floating point precision issues
 		}
 	}
 
@@ -35,5 +35,5 @@ func giveChange(total, paid float64) {
 }
 
 func main() {
-	giveChange(35.70, 50)
+	giveChange(35.67, 50)
 }
