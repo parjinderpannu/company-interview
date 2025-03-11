@@ -13,26 +13,27 @@ var (
 
 func worker(id int, wg *sync.WaitGroup) {
 	defer wg.Done()
-
-	fmt.Printf("Worker %d is trying to increment counter.....\n", id)
+	// fmt.Printf("%d Go routine started and counter = %d\n", id, counter)
 
 	mutex.Lock()
 	counter++
-	fmt.Printf("Worker %d incremented counter to %d\n", id, counter)
+	// fmt.Printf("%d Go routine ended and counter = %d\n", id, counter)
 	mutex.Unlock()
 
-	time.Sleep(time.Millisecond * 500)
-
+	time.Sleep(time.Microsecond * 500) // doing some work
 }
 
 func main() {
 	var wg sync.WaitGroup
-	numberWorkers := 5
-	wg.Add(numberWorkers)
-	for i := 0; i < numberWorkers; i++ {
+
+	totalGogoutines := 10000
+	wg.Add(totalGogoutines)
+
+	for i := 0; i < totalGogoutines; i++ {
 		go worker(i, &wg)
 	}
 
 	wg.Wait()
-	fmt.Printf("Final counter value: %d\n", counter)
+	fmt.Printf("\nAll %d Go Routines finished \nCounter : %d", totalGogoutines, counter)
+
 }
