@@ -6,6 +6,17 @@ import (
 	"math"
 )
 
+var changeAvailable = map[float64]int{
+	20.00: 10,
+	10.00: 10,
+	5.00:  10,
+	1.00:  10,
+	0.25:  50,
+	0.10:  50,
+	0.05:  50,
+	0.01:  101,
+}
+
 func giveChange(total, paid float64) {
 	if paid < total {
 		fmt.Println("Not enough money given!")
@@ -34,6 +45,28 @@ func giveChange(total, paid float64) {
 	}
 }
 
+func totalChange() float64 {
+	var amount float64
+	for key, value := range changeAvailable {
+		amount = amount + (key * float64(value))
+	}
+	return amount
+}
+
+func updateChange(denom float64, count int) {
+	if val, exists := changeAvailable[denom]; exists && val > 0 && val >= count {
+		changeAvailable[denom] += count
+	} else {
+		fmt.Printf("\nDenomination $%0.2f is either not available or less than %d\n", denom, count)
+	}
+}
+
 func main() {
 	giveChange(35.67, 50)
+	availableMoney := totalChange()
+	fmt.Printf("\nTotal Available Money: $%0.2f\n\n ", availableMoney)
+	updateChange(20, -10)
+	availableMoney = totalChange()
+	fmt.Printf("\nTotal Available Money: $%0.2f\n\n ", availableMoney)
+
 }
